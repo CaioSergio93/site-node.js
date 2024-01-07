@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Músicas Favoritas</title>
+</head>
+
+<body>
+
+    <button onclick="location.href='/index.htm'">Início</button>
+  <h1>Músicas Favoritas</h1>
+  <div id="favoriteResults"></div>
+
+  <script>
+    async function getFavorites() {
+      try {
+        const response = await fetch('/favorites');
+
+        if (!response.ok) {
+          throw new Error('Erro na solicitação');
+        }
+
+        const data = await response.json();
+
+        displayFavorites(data);
+      } catch (error) {
+        console.error('Erro ao obter músicas favoritas:', error.message);
+      }
+    }
+
+    function displayFavorites(favorites) {
+      const favoriteResultsContainer = document.getElementById('favoriteResults');
+      favoriteResultsContainer.innerHTML = '';
+
+      favorites.forEach(favorite => {
+        const favoriteItem = document.createElement('div');
+        favoriteItem.textContent = `Título: ${favorite.title}, Video ID: ${favorite.videoId}`;
+        favoriteResultsContainer.appendChild(favoriteItem);
+      });
+
+      console.log('Músicas Favoritas:', favorites);
+    }
+
+    // Carrega automaticamente as músicas favoritas ao abrir a página
+    getFavorites();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site de Musica de Estefany</title>
+</head>
+
+<body>
+
+  <button onclick="location.href='/index.htm'">Início</button>
+  <h1>Site de Musica de Estefany</h1>
+
+  <input type="text" id="searchInput" placeholder="Digite o nome da música">
+  <button onclick="searchYouTube()">Pesquisar</button>
+  <button onclick="location.href='/favorites.htm'">Mostrar Favoritos</button>
+
+
+  <div id="results"></div>
+
+  <script>
+    async function searchYouTube() {
+      const query = document.getElementById('searchInput').value;
+      const response = await fetch(`/search/${query}`);
+      
+      if (!response.ok) {
+        console.error('Erro na requisição:', response.statusText);
+        return;
+      }
+
+      const data = await response.json();
+
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = '';
+
+      data.forEach(video => {
+        const container = document.createElement('div');
+        const iframe = document.createElement('iframe');
+        iframe.src = `https://www.youtube.com/embed/${video.videoId}`;
+        iframe.width = '300';
+        iframe.height = '200';
+
+        const addButton = document.createElement('button');
+        addButton.textContent = 'Adicionar aos Favoritos';
+        addButton.onclick = () => addFavorite(video.title, video.videoId);
+
+        container.appendChild(iframe);
+        container.appendChild(addButton);
+
+        resultsContainer.appendChild(container);
+      });
+    }
+
+    async function addFavorite(title, videoId) {
+      const response = await fetch('/favorites', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ title, videoId }),
+      });
+
+      if (response.ok) {
+        console.log('Música adicionada aos favoritos');
+      } else {
+        const data = await response.json();
+        console.error('Erro ao adicionar música aos favoritos:', data.error);
+      }
+    }
+
+  </script>
+
+
+  
+
+</body>
+</html>
