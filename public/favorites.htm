@@ -5,13 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Músicas Favoritas</title>
+  <!-- Adicionando o Bootstrap via CDN -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 
-<body>
+<body class="bg-light">
 
-    <button onclick="location.href='/index.htm'">Início</button>
-  <h1>Músicas Favoritas</h1>
-  <div id="favoriteResults"></div>
+  <div class="container mt-5">
+    <button class="btn btn-primary" onclick="location.href='/index.htm'">Início</button>
+    <h1 class="mt-4">Músicas Favoritas</h1>
+    
+    <div id="favoriteResults" class="mt-4"></div>
+  </div>
 
   <script>
     async function getFavorites() {
@@ -36,7 +41,13 @@
 
       favorites.forEach(favorite => {
         const favoriteItem = document.createElement('div');
-        favoriteItem.textContent = `Título: ${favorite.title}, Video ID: ${favorite.videoId}`;
+        favoriteItem.classList.add('card', 'mb-3');
+        favoriteItem.innerHTML = `
+          <div class="card-body">
+            <h5 class="card-title">${favorite.title}</h5>
+            <p class="card-text">Video ID: ${favorite.videoId}</p>
+          </div>
+        `;
         favoriteResultsContainer.appendChild(favoriteItem);
       });
 
@@ -46,6 +57,7 @@
     // Carrega automaticamente as músicas favoritas ao abrir a página
     getFavorites();
   </script>
+
 </body>
 
 </html>
