@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const favoritesModel = require('./models/favoritesModel');
 
+router.use(express.json()); // Adiciona o middleware para fazer o parsing do corpo da requisição JSON
+
 router.get('/', (req, res) => {
   favoritesModel.getAllFavorites((err, results) => {
     if (err) {
