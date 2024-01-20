@@ -3,7 +3,7 @@ const axios = require('axios');
 const path = require('path');
 const router = express.Router();  // Utiliza express.Router() para criar o router
 
-const apiKey = 'AIzaSyCWiZ33R3I82cT6NZNI2jrZQuA8Gq2fEKs';
+const apiKey = process.env.API_KEY;
 
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.htm'));
@@ -13,7 +13,7 @@ router.get('/search/:query', async (req, res) => {
     const query = req.params.query;
 
     try {
-        const response = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+        const response = await axios.get(process.env.END_POINT_SEARCH, {
             params: {
                 part: 'snippet',
                 q: query,
